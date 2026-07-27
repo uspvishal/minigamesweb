@@ -1,9 +1,9 @@
 const cacheName = "DefaultCompany-firefighterHero-1.0";
 const contentToCache = [
     "Build/firefighterHero.loader.js",
-    "Build/firefighterHero.framework.js.br",
-    "Build/firefighterHero.data.br",
-    "Build/firefighterHero.wasm.br",
+    "Build/firefighterHero.framework.js.unityweb",
+    "Build/firefighterHero.data.unityweb",
+    "Build/firefighterHero.wasm.unityweb",
     "TemplateData/style.css"
 
 ];
