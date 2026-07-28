@@ -1,9 +1,9 @@
 const cacheName = "DefaultCompany-numberbondweb-0.1.0";
 const contentToCache = [
     "Build/numberbondweb.loader.js",
-    "Build/numberbondweb.framework.js.br",
-    "Build/numberbondweb.data.br",
-    "Build/numberbondweb.wasm.br",
+    "Build/numberbondweb.framework.js.unityweb",
+    "Build/numberbondweb.data.unityweb",
+    "Build/numberbondweb.wasm.unityweb",
     "TemplateData/style.css"
 
 ];
