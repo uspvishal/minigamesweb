@@ -1,9 +1,9 @@
 const cacheName = "DefaultCompany-PlanetMaze_web-1.0";
 const contentToCache = [
     "Build/planetmaze_web.loader.js",
-    "Build/planetmaze_web.framework.js.br",
-    "Build/planetmaze_web.data.br",
-    "Build/planetmaze_web.wasm.br",
+    "Build/planetmaze_web.framework.js.unityweb",
+    "Build/planetmaze_web.data.unityweb",
+    "Build/planetmaze_web.wasm.unityweb",
     "TemplateData/style.css"
 
 ];
