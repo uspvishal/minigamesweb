@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Mini Games — Menu</title>
+		<meta name="description" content="Collection of mini web games" />
+		<style>
+			:root{--bg:#0f1724;--card:#0b1220;--accent:#7c3aed;--muted:rgba(255,255,255,0.7)}
+			html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial}
+			body{background:radial-gradient(1200px 600px at 10% 10%, rgba(124,58,237,0.12), transparent 10%), radial-gradient(900px 500px at 90% 90%, rgba(34,197,94,0.06), transparent 10%), linear-gradient(180deg,#071029 0%, #071022 60%);color:white;display:flex;flex-direction:column}
+			header{padding:28px 32px;display:flex;align-items:center;gap:18px}
+			.logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#06b6d4);display:flex;align-items:center;justify-content:center;font-weight:700;box-shadow:0 6px 30px rgba(12,18,32,.6);transform:rotate(-8deg)}
+			h1{font-size:20px;margin:0}
+			p.lead{margin:0;color:var(--muted)}
+			main{padding:28px 32px 56px;flex:1}
+			.search-row{display:flex;gap:12px;align-items:center;max-width:980px;margin-bottom:20px}
+			.search{flex:1;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.04);padding:12px 14px;border-radius:12px;color:inherit}
+			.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px;max-width:1180px}
+			.card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border:1px solid rgba(255,255,255,0.04);padding:18px;border-radius:12px;display:flex;gap:12px;align-items:center;cursor:pointer;transition:transform .22s ease,box-shadow .22s ease}
+			.card:hover{transform:translateY(-6px) scale(1.01);box-shadow:0 10px 30px rgba(2,6,23,0.6)}
+			.thumb{width:56px;height:56px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;color:white}
+			.meta{flex:1}
+			.name{font-size:16px;margin:0 0 4px}
+			.desc{font-size:13px;color:var(--muted);margin:0}
+			.badge{font-size:12px;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.03)}
+			footer{padding:16px 32px;color:var(--muted);font-size:13px}
+			/* animated blobs */
+			.blob{position:fixed;filter:blur(40px);opacity:.6;pointer-events:none;z-index:0}
+			.blob.b1{left:-120px;top:-60px;width:420px;height:420px;background:linear-gradient(45deg,#7c3aed,#06b6d4);animation:float1 10s ease-in-out infinite}
+			.blob.b2{right:-140px;bottom:-80px;width:420px;height:420px;background:linear-gradient(45deg,#ef4444,#f59e0b);animation:float2 12s ease-in-out infinite}
+			@keyframes float1{0%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(24px) rotate(8deg)}100%{transform:translateY(0) rotate(0deg)}}
+			@keyframes float2{0%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-20px) rotate(-6deg)}100%{transform:translateY(0) rotate(0deg)}}
+			/* responsive */
+			@media (max-width:640px){header{padding:18px}main{padding:18px} .logo{width:46px;height:46px}}
+		</style>
+	</head>
+	<body>
+		<div class="blob b1" aria-hidden></div>
+		<div class="blob b2" aria-hidden></div>
+		<header>
+			<div class="logo">MG</div>
+			<div>
+				<h1>Mini Games</h1>
+				<p class="lead">A curated menu of playable web mini-games — click to open.</p>
+			</div>
+		</header>
+		<main>
+			<div class="search-row">
+				<input id="search" class="search" placeholder="Filter games by name..." aria-label="Search games" />
+				<div class="badge">Found <span id="count">0</span></div>
+			</div>
+
+			<div id="grid" class="grid" role="list"></div>
+		</main>
+		<footer>Built from project folders — excluding any folder with "_first" in its name.</footer>
+
+		<script>
+			// Discovered game folders (generated from workspace scan)
+			const games = [
+				{id:'DressUpTruck', title:'Dress Up Truck', desc:'Dress and style the truck'},
+				{id:'LookandCompare', title:'Look and Compare', desc:'Find matching items quickly'},
+				{id:'NumberBond', title:'Number Bond', desc:'Number bond mini-game'},
+				{id:'TransportPuzzle', title:'Transport Puzzle', desc:'Solve transport puzzles'},
+				{id:'booboogameweb', title:'Booboo Game', desc:'Play the Booboo web build'},
+				{id:'createyourpattern_web', title:'Create Your Pattern', desc:'Design patterns and shapes'},
+				{id:'finditgameweb', title:'Find It', desc:'Spot the hidden objects'},
+				{id:'firefighterhero', title:'Firefighter Hero', desc:'Rescue and save the city'},
+				{id:'fruitconnect_web', title:'Fruit Connect', desc:'Match fruits to connect'},
+				{id:'littlechef', title:'Little Chef', desc:'Cooking mini-game for kids'},
+				{id:'moveandplace_web', title:'Move and Place', desc:'Drag, move, and place items'},
+				{id:'numberbondweb', title:'Number Bond (alt)', desc:'Alternate number bond build'},
+				{id:'numbermatch_web', title:'Number Match', desc:'Match numbers to win'},
+				{id:'planetmaze_web', title:'Planet Maze', desc:'Navigate mazes on planets'},
+				{id:'positionsanddirections', title:'Positions & Directions', desc:'Learn positions and directions'},
+				{id:'schoolbus_web', title:'School Bus', desc:'School bus themed activities'},
+				{id:'spotthedifference', title:'Spot The Difference', desc:'Find differences in images'},
+			];
+
+			const grid = document.getElementById('grid');
+			const count = document.getElementById('count');
+			const search = document.getElementById('search');
+
+			function makeCard(g){
+				const a = document.createElement('a');
+				a.href = g.id + '/index.html';
+				a.className = 'card';
+				a.setAttribute('role','listitem');
+
+				const thumb = document.createElement('div');
+				thumb.className = 'thumb';
+				// color based on name hash
+				const hue = Array.from(g.id).reduce((s,c)=>s+c.charCodeAt(0),0)%360;
+				thumb.style.background = `linear-gradient(135deg,hsl(${hue} 80% 55%), hsl(${(hue+50)%360} 80% 45%))`;
+				thumb.textContent = g.title.split(' ').map(s=>s[0]).slice(0,2).join('').toUpperCase();
+
+				const meta = document.createElement('div'); meta.className='meta';
+				const name = document.createElement('div'); name.className='name'; name.textContent = g.title;
+				const desc = document.createElement('div'); desc.className='desc'; desc.textContent = g.desc || '';
+
+				meta.appendChild(name); meta.appendChild(desc);
+				a.appendChild(thumb); a.appendChild(meta);
+				return a;
+			}
+
+			function render(filter=''){
+				grid.innerHTML = '';
+				const f = filter.trim().toLowerCase();
+				const visible = games.filter(g=> g.title.toLowerCase().includes(f) || g.id.toLowerCase().includes(f));
+				visible.forEach(g=> grid.appendChild(makeCard(g)));
+				count.textContent = visible.length;
+			}
+
+			search.addEventListener('input',()=>render(search.value));
+
+			// initial render
+			render();
+		</script>
+	</body>
+</html>
